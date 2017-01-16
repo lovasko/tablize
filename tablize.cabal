@@ -1,6 +1,6 @@
 name:                tablize
 version:             1.0.0
-synopsis:            Pretty-priting of CSV files
+synopsis:            Pretty-printing of CSV files
 description:         Command-line utility to pretty-print CSV files with custom
                      visual decoration and column alignments.
 homepage:            https://github.com/lovasko/tablize
