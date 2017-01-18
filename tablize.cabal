@@ -16,6 +16,7 @@ cabal-version:       >=1.10
 executable tablize
   hs-source-dirs:      src
   main-is:             Main.hs
+  other-modules:       Options
   build-depends:       base > 4.7 && < 5
                      , attoparsec
                      , comma
