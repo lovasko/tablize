@@ -21,17 +21,19 @@ parseDecor = A.string "all"     *> pure DecorAll
          <|> A.string "except(" *> (DecorExcept <$> decimal) <* A.char ')'
          <|> A.string "union("  *> (DecorUnion  <$> recurse) <* A.char ')'
          <|> A.string "isect("  *> (DecorIsect  <$> recurse) <* A.char ')'
+         A.<?> "invalid decoration"
   where
     recurse = A.sepBy parseDecor (A.char ',')
     decimal = A.sepBy A.decimal  (A.char ',')
 
 -- | Parse the column alignment settings.
 parseAligns :: A.Parser [Alignment] -- ^ parser
-parseAligns = A.sepBy align (A.char ',')
+parseAligns = (A.endOfInput *> pure []) <|> A.sepBy1 align (A.char ',')
   where
     align = A.string "left"   *> pure AlignLeft
         <|> A.string "centre" *> pure AlignCentre
         <|> A.string "right"  *> pure AlignRight
+        A.<?> "invalid alignment"
 
 -- | Create a table based on the file content and command-line options.
 tablize :: Options              -- ^ command-line options
