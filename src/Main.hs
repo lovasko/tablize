@@ -43,14 +43,6 @@ tablize options cells = do
   aligns <- A.parseOnly parseAligns (optAlignment options)
   return $ tabl EnvAscii hdecor vdecor aligns cells
 
--- | Perform the final output of the program.
-result :: Either String T.Text -- ^ error | table
-       -> IO ()                -- ^ action
-result = either failure success
-  where
-    failure err = T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
-    success res = T.putStrLn res                       >> exitSuccess
-
 -- | Read the input file text. In case that no file was specified, the 
 -- standard input is used.
 getInput :: Options   -- ^ command-line options
@@ -64,6 +56,6 @@ main :: IO ()
 main = do
   options <- execParser Options.parser
   input   <- getInput options
-  case comma input of
+  case comma input >>= tablize options of
     Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
-    Right csv -> result (tablize options csv)
+    Right res -> T.putStrLn res                       >> exitSuccess
