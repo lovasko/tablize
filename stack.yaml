@@ -4,5 +4,5 @@ packages:
 - '.'
 extra-deps:
 - comma-1.0.1
-- tabl-1.0.1
+- tabl-1.0.3
 resolver: lts-7.14
