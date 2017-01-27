@@ -10,8 +10,8 @@ import qualified Data.Text as T
 -- | Command-line options.
 data Options = Options
   { optFile       :: Maybe String
-  , optHorizontal :: T.Text 
-  , optVertical   :: T.Text 
+  , optHorizontal :: T.Text
+  , optVertical   :: T.Text
   , optAlignment  :: T.Text }
 
 -- | Relevant file extensions options.
@@ -58,8 +58,8 @@ optionsParser :: Parser Options -- ^ parser
 optionsParser = Options
   <$> parseFile
   <*> parseHorizontal
-  <*> parseVertical 
-  <*> parseAlignment 
+  <*> parseVertical
+  <*> parseAlignment
 
 -- | Parser of the command-line options.
 parser :: ParserInfo Options -- ^ parser

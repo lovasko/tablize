@@ -45,7 +45,7 @@ tablize options cells = do
   aligns <- A.parseOnly parseAligns (optAlignment options)
   return $ tabl EnvAscii hdecor vdecor aligns cells
 
--- | Read the input file text. In case that no file was specified, the 
+-- | Read the input file text. In case that no file was specified, the
 -- standard input is used.
 getInput :: Options   -- ^ command-line options
          -> IO T.Text -- ^ input
