@@ -11,6 +11,7 @@ import qualified Data.Text.IO as T
 
 import Options
 
+
 -- | Parse the visual decoration settings.
 parseDecor :: A.Parser Decoration -- ^ parser
 parseDecor = A.string "all"     *> pure DecorAll

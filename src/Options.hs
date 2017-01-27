@@ -7,6 +7,7 @@ import Data.Char
 import Options.Applicative
 import qualified Data.Text as T
 
+
 -- | Command-line options.
 data Options = Options
   { optFile       :: Maybe String
