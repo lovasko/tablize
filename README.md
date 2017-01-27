@@ -11,7 +11,7 @@ this document.
 ## Example
 A simple table defining services and network ports for different hosts in the
 network:
-```sh
+```
 $ cat config.csv
 host,service,port
 qa.example.com,apache,443
@@ -20,7 +20,7 @@ testing.example.com,apache,8080
 ```
 
 The above table can be rendered into the following text:
-```sh
+```
 $ tablize config.csv -x 'union(outer, only(1))' -y all -a left,left,right
 +---------------------+---------+------+
 | host                | service | port |
@@ -57,14 +57,14 @@ optional named parameters:
    DSL described below (default: `all`)
 
  * `-a|--alignment ALIGN` defines the column alignment starting from the
-   left-most column (default: ``). Valid alignments are `left`, `centre` and
-   `right`. Alignments are assigned starting from the left side, while all
-   unspecified columns will default to `left`.
+   left-most column (default: empty string). Valid alignments are `left`,
+   `centre` and `right`. Alignments are assigned starting from the left side,
+   while all unspecified columns will default to `left`.
 
 
 ## Decoration language
 The decoration language  is used to define the presence of decorative lines
-(separately for horizontal and vertica) wihtin the table. Lines can be used
+(separately for horizontal and vertical) within the table. Lines can be used
 to separate sections of the table - always the full length, row or column.
 
 The decoration is represented by exactly one statement. All statements are
@@ -92,6 +92,67 @@ resulting in decoration seen in the Example section.
 
 All whitespace is disregarded as non-relevant and can be used for stylistic
 purposes.
+
+### Examples
+The following set of examples with operate on a simple 3x3 table filled with
+`o` characters:
+```
+$ cat o.csv
+o,o,o
+o,o,o
+o,o,o
+```
+
+#### Inner lines only
+```
+$ tablize o.csv -x inner -y inner
+o | o | o
+--+---+--
+o | o | o
+--+---+--
+o | o | o
+```
+
+#### Outer lines only
+```
+$ tablize o.csv -x outer -y outer
++-------+
+| o o o |
+| o o o |
+| o o o |
++-------+
+```
+
+#### Separating the first column
+```
+$ tablize o.csv -x none -y 'only(1)'
+o | o o
+o | o o
+o | o o
+```
+
+#### Default settings
+```
+$ tablize o.csv -x 'union(outer, only(1))' -y all
++---+---+---+
+| o | o | o |
++---+---+---+
+| o | o | o |
+| o | o | o |
++---+---+---+
+```
+
+#### Separating all rows
+```
+$ tablize o.csv -x all -y none
+-----
+o o o
+-----
+o o o
+-----
+o o o
+-----
+```
 
 ## License
 The source code of the `tablize` utility is licensed under the terms of the
