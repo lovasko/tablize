@@ -40,17 +40,17 @@ parseAligns = (A.endOfInput *> pure []) <|> A.sepBy1 align (A.char ',')
 tablize :: Options              -- ^ command-line options
         -> [[T.Text]]           -- ^ CSV table
         -> Either String T.Text -- ^ error | table
-tablize options cells = do
-  hdecor <- A.parseOnly parseDecor  (optHorizontal options)
-  vdecor <- A.parseOnly parseDecor  (optVertical options)
-  aligns <- A.parseOnly parseAligns (optAlignment options)
+tablize opts cells = do
+  hdecor <- A.parseOnly parseDecor  (optHorizontal opts)
+  vdecor <- A.parseOnly parseDecor  (optVertical opts)
+  aligns <- A.parseOnly parseAligns (optAlignment opts)
   return $ tabl EnvAscii hdecor vdecor aligns cells
 
 -- | Pretty-printing of CSV files.
 main :: IO ()
 main = do
-  options <- execParser Options.parser
-  input   <- maybe T.getContents T.readFile (optFile options)
-  case comma input >>= tablize options of
-    Left err  -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
+  opts  <- execParser Options.parser
+  input <- maybe T.getContents T.readFile (optFile opts)
+  case comma input >>= tablize opts of
+    Left  err -> T.putStrLn ("ERROR: " <> T.pack err) >> exitFailure
     Right res -> T.putStrLn res                       >> exitSuccess
