@@ -1,5 +1,5 @@
 # tablize
-Pretty-printing of CSV files.
+[![Build Status](https://travis-ci.org/lovasko/tablize.svg?branch=master)](https://travis-ci.org/lovasko/tablize)
 
 ## Introduction
 The `tablize` utility can be used to pretty-print tables defined by the
