@@ -1,0 +1,52 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "TABLIZE" "1" "July 2017" "lovasko" ""
+.
+.SH "NAME"
+\fBtablize\fR \- pretty\-print CSV file
+.
+.SH "SYNOPSIS"
+\fBtablize\fR [\fB\-x\fR | \fB\-\-horizontal\fR \fIHDECOR\fR] [\fB\-y\fR | \fB\-\-vertical\fR \fIVDECOR\fR] [\fB\-a\fR | \fB\-\-alignment\fR \fIALIGNS\fR] [\fIFILE\fR]
+.
+.SH "DESCRIPTION"
+The \fBtablize\fR utility pretty\-prints tables defined by the CSV format (the parsing of the format is RFC4180 complaint)\. It provides column alignments and visual decoration of the table both horizontally and vertically\. A simple domain\-specific language was introduced with the purpose of describing the table decorations\. Its grammar is introduced in the \fBDECORATION LANGUAGE\fR section of this manual page\.
+.
+.SH "OPTIONS"
+The only positional argument of the program is the path to the CSV file\. If omitted, standard input stream is used instead\. Optional arguments are:
+.
+.TP
+\fB\-x | \-\-horizontal\fR
+Defines the horizontal decoration, using the custom DSL described below (default: \fBunion(outer, only(1))\fR)\.
+.
+.TP
+\fB\-y | \-\-vertical\fR
+Defines the vertical decoration, using the custom DSL described below (default: \fBall\fR)\.
+.
+.TP
+\fB\-a | \-\-alignment\fR
+Defines the column alignment starting from the left\-most column (default: empty string)\. Valid alignments are \fBleft\fR, \fBcentre\fR and \fBright\fR\. A valid definition is a comma\-separated list of these alignments\. Alignments are assigned starting from the left, while all unspecified columns will default to value \fBleft\fR\.
+.
+.SH "DECORATION LANGUAGE"
+The decoration language is used to define the presence of decorative lines (separately for horizontal and vertical) within the table\. Lines can be used to separate sections of the table \- always the full length, row or column\.
+.
+.P
+The decoration is represented by exactly one statement\. All statements are described below:
+.
+.P
+The \fBall\fR statement results in all lines (in the relevant orientation) to be visible\. Opposite effect can be achieved via the \fBnone\fR statement that, naturally, makes no decorative lines visible\.
+.
+.P
+The \fBinner\fR and \fBouter\fR statements, as the names suggest, provide means of decorating the inner and outer lines of the table respectively\. These statements are best used when the number of columns or rows is not known beforehand\.
+.
+.P
+The \fBonly\fR statement expects a list of zero or more unsigned integer indices separated by the comma character(leftmost and topmost lines equal to zero) that should be contained in the decoration\. An example of the statement is: \fBonly(1, 2, 3)\fR\. The opposite statement, \fBexcept\fR, includes all but lines specified with indices\.
+.
+.P
+Two combinators \- \fBunion\fR and \fBisect\fR can be used to specify a set union and set intersection of zero or more decorations separated by the comma character\. The default value for the horizontal decoration is \fBunion(outer, only(1))\fR, resulting in decoration seen in the Example section\.
+.
+.P
+All whitespace is ignored and can be used for stylistic purposes\.
+.
+.SH "AUTHOR"
+Daniel Lovasko \fB<daniel\.lovasko@gmail\.com>\fR

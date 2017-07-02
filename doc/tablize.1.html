@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>tablize(1) - pretty-print CSV file </title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#DECORATION-LANGUAGE">DECORATION LANGUAGE</a>
+    <a href="#AUTHOR">AUTHOR</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>tablize(1)</li>
+    <li class='tc'></li>
+    <li class='tr'>tablize(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>tablize</code> - <span class="man-whatis">pretty-print CSV file </span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>tablize</code> [<code>-x</code> | <code>--horizontal</code> <em>HDECOR</em>] [<code>-y</code> | <code>--vertical</code> <em>VDECOR</em>]
+[<code>-a</code> | <code>--alignment</code> <em>ALIGNS</em>] [<em>FILE</em>]</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>The <code>tablize</code> utility pretty-prints tables defined by the CSV format (the
+parsing of the format is RFC4180 complaint). It provides column alignments and
+visual decoration of the table both horizontally and vertically. A
+simple domain-specific language was introduced with the purpose of describing
+the table decorations. Its grammar is introduced in the <code>DECORATION LANGUAGE</code>
+section of this manual page.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<p>The only positional argument of the program is the path to the CSV file. If
+omitted, standard input stream is used instead. Optional arguments are:</p>
+
+<dl>
+<dt><code>-x | --horizontal</code></dt><dd><p>Defines the horizontal decoration, using the custom DSL described below
+(default: <code>union(outer, only(1))</code>).</p></dd>
+<dt><code>-y | --vertical</code></dt><dd><p>Defines the vertical decoration, using the custom DSL described below
+(default: <code>all</code>).</p></dd>
+<dt><code>-a | --alignment</code></dt><dd><p>Defines the column alignment starting from the left-most column (default:
+empty string). Valid alignments are <code>left</code>, <code>centre</code> and <code>right</code>. A valid
+definition is a comma-separated list of these alignments. Alignments are
+assigned starting from the left, while all unspecified columns will
+default to value <code>left</code>.</p></dd>
+</dl>
+
+
+<h2 id="DECORATION-LANGUAGE">DECORATION LANGUAGE</h2>
+
+<p>The decoration language  is used to define the presence of decorative lines
+(separately for horizontal and vertical) within the table. Lines can be used
+to separate sections of the table - always the full length, row or column.</p>
+
+<p>The decoration is represented by exactly one statement. All statements are
+described below:</p>
+
+<p>The <code>all</code> statement results in all lines (in the relevant orientation) to be
+visible. Opposite effect can be achieved via the <code>none</code> statement that,
+naturally, makes no decorative lines visible.</p>
+
+<p>The <code>inner</code> and <code>outer</code> statements, as the names suggest, provide means of
+decorating the inner and outer lines of the table respectively. These
+statements are best used when the number of columns or rows is not known
+beforehand.</p>
+
+<p>The <code>only</code> statement expects a list of zero or more unsigned integer indices
+separated by the comma character(leftmost and topmost lines equal to zero)
+that should be contained in the decoration. An example of the statement is:
+<code>only(1, 2, 3)</code>. The opposite statement, <code>except</code>, includes all but
+lines specified with indices.</p>
+
+<p>Two combinators - <code>union</code> and <code>isect</code> can be used to specify a set union and
+set intersection of zero or more decorations separated by the comma character.
+The default value for the horizontal decoration is <code>union(outer, only(1))</code>,
+resulting in decoration seen in the Example section.</p>
+
+<p>All whitespace is ignored and can be used for stylistic purposes.</p>
+
+<h2 id="AUTHOR">AUTHOR</h2>
+
+<p>Daniel Lovasko <code>&lt;daniel.lovasko@gmail.com&gt;</code></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'>lovasko</li>
+    <li class='tc'>July 2017</li>
+    <li class='tr'>tablize(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
