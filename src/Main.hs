@@ -14,7 +14,8 @@ import Options
 
 
 -- | Parse the visual decoration settings.
-parseDecor :: A.Parser Decoration -- ^ parser
+parseDecor
+  :: A.Parser Decoration -- ^ parser
 parseDecor = asum
   [ A.string "all"     *> pure DecorAll
   , A.string "none"    *> pure DecorNone
@@ -30,7 +31,8 @@ parseDecor = asum
     decimal = A.sepBy A.decimal  (A.char ',')
 
 -- | Parse the column alignment settings.
-parseAligns :: A.Parser [Alignment] -- ^ parser
+parseAligns
+  :: A.Parser [Alignment] -- ^ parser
 parseAligns = (A.endOfInput *> pure []) <|> A.sepBy1 align (A.char ',')
   where
     align = asum
@@ -40,9 +42,10 @@ parseAligns = (A.endOfInput *> pure []) <|> A.sepBy1 align (A.char ',')
       ] A.<?> "invalid alignment"
 
 -- | Create a table based on the file content and command-line options.
-tablize :: Options              -- ^ command-line options
-        -> [[T.Text]]           -- ^ CSV table
-        -> Either String T.Text -- ^ error | table
+tablize
+  :: Options              -- ^ command-line options
+  -> [[T.Text]]           -- ^ CSV table
+  -> Either String T.Text -- ^ error | table
 tablize opts cells = do
   hdecor <- A.parseOnly parseDecor  (optHorizontal opts)
   vdecor <- A.parseOnly parseDecor  (optVertical opts)
@@ -50,7 +53,8 @@ tablize opts cells = do
   return $ tabl EnvAscii hdecor vdecor aligns cells
 
 -- | Pretty-printing of CSV files.
-main :: IO ()
+main
+  :: IO ()
 main = do
   opts  <- execParser Options.parser
   input <- maybe T.getContents T.readFile (optFile opts)

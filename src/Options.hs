@@ -16,16 +16,19 @@ data Options = Options
   , optAlignment  :: T.Text }
 
 -- | Relevant file extensions options.
-parseFile :: Parser (Maybe String) -- ^ parser
+parseFile
+  :: Parser (Maybe String) -- ^ parser
 parseFile = optional $ strArgument (metavar "FILE")
 
 -- | Helper funciton to remove all whitespace from a string.
-noSpace :: String -- ^ old string
-        -> String -- ^ new string
+noSpace
+  :: String -- ^ old string
+  -> String -- ^ new string
 noSpace = filter (not . isSpace)
 
 -- | Parse horizontal decoration.
-parseHorizontal :: Parser T.Text -- ^ parser
+parseHorizontal
+  :: Parser T.Text -- ^ parser
 parseHorizontal = fmap (T.pack . noSpace) $ strOption
    $ short   'x'
   <> long    "horizontal"
@@ -35,7 +38,8 @@ parseHorizontal = fmap (T.pack . noSpace) $ strOption
   <> showDefault
 
 -- | Relevant file extensions options.
-parseVertical :: Parser T.Text -- ^ parser
+parseVertical
+  :: Parser T.Text -- ^ parser
 parseVertical = fmap (T.pack . noSpace) $ strOption
    $ short   'y'
   <> long    "vertical"
@@ -45,7 +49,8 @@ parseVertical = fmap (T.pack . noSpace) $ strOption
   <> showDefault
 
 -- | Relevant file extensions options.
-parseAlignment :: Parser T.Text -- ^ parser
+parseAlignment
+  :: Parser T.Text -- ^ parser
 parseAlignment = fmap (T.pack . noSpace) $ strOption
    $ short   'a'
   <> long    "alignment"
@@ -55,7 +60,8 @@ parseAlignment = fmap (T.pack . noSpace) $ strOption
   <> showDefault
 
 -- | Command-line user interface.
-optionsParser :: Parser Options -- ^ parser
+optionsParser
+  :: Parser Options -- ^ parser
 optionsParser = Options
   <$> parseFile
   <*> parseHorizontal
@@ -63,6 +69,7 @@ optionsParser = Options
   <*> parseAlignment
 
 -- | Parser of the command-line options.
-parser :: ParserInfo Options -- ^ parser
+parser
+  :: ParserInfo Options -- ^ parser
 parser = info (helper <*> optionsParser) (header top <> fullDesc)
   where top = "tablize - CSV file pretty-printer"
